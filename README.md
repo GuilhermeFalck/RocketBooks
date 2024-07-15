@@ -1,5 +1,11 @@
 # RocketMovies
 
-Para Adicionar as bibliotecas necessárias utilize:
+Aplicativo para adicionar filmes nos perfis do usuários
 
-`npm install`
+## Instalação
+
+Instale node_modules com npm
+
+```bash
+  npm install
+```
