@@ -1,4 +1,4 @@
-# RocketBooks
+# RocketBooks Backend
 
 Aplicativo para adicionar livros nos perfis dos usuários
 
