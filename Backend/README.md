@@ -1,6 +1,6 @@
-# RocketMovies
+# RocketBooks
 
-Aplicativo para adicionar filmes nos perfis do usuários
+Aplicativo para adicionar livros nos perfis dos usuários
 
 ## Instalação
 
