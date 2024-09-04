@@ -11,10 +11,10 @@ class NotesController {
       user_id,
     });
 
-    const ratingInsert = rating.map((rating) => {
+    const ratingInsert = rating.map((link) => {
       return {
         note_id,
-        url: rating,
+        url: link,
       };
     });
 
@@ -83,7 +83,7 @@ class NotesController {
     }
 
     const userTags = await knex("tags").where({ user_id });
-    const notesWithTags = notes.map((note) => {
+    const notesWhithTags = notes.map((note) => {
       const noteTags = userTags.filter((tag) => tag.note_id === note.id);
 
       return {
@@ -92,7 +92,7 @@ class NotesController {
       };
     });
 
-    return response.json(notesWithTags);
+    return response.json(notesWhithTags);
   }
 }
 

@@ -1,15 +1,13 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "API developed in program Explorer to RocketSeat",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js",
-    "migrate": "npx knex migrate:latest"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Guilherme Falck do Carmo",
   "license": "ISC",
+  "description": "API para RocketBooks",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -20,8 +18,5 @@
     "multer": "^1.4.5-lts.1",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.3"
   }
 }
