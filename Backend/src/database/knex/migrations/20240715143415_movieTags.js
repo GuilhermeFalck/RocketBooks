@@ -1,5 +1,5 @@
 exports.up = (knex) =>
-  knex.schema.createTable("movieTags", (table) => {
+  knex.schema.createTable("bookTags", (table) => {
     table.increments("id");
     table.text("name").notNullable();
 
@@ -11,4 +11,4 @@ exports.up = (knex) =>
       .onDelete("CASCADE");
   });
 
-exports.down = (knex) => knex.schema.dropTable("movieTags");
+exports.down = (knex) => knex.schema.dropTable("bookTags");
