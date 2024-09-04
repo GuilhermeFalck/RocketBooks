@@ -2,7 +2,7 @@ const knex = require("../database/knex");
 
 class NotesController {
   async create(request, response) {
-    const { title, description, tags, links } = request.body;
+    const { title, description, tags, rating } = request.body;
     const user_id = request.user.id;
 
     const [note_id] = await knex("notes").insert({
@@ -11,14 +11,14 @@ class NotesController {
       user_id,
     });
 
-    const linksInsert = links.map((link) => {
+    const ratingInsert = rating.map((rating) => {
       return {
         note_id,
-        url: link,
+        url: rating,
       };
     });
 
-    await knex("links").insert(linksInsert);
+    await knex("rating").insert(ratingInsert);
 
     const tagsInsert = tags.map((name) => {
       return {
@@ -38,14 +38,14 @@ class NotesController {
 
     const note = await knex("notes").where({ id }).first();
     const tags = await knex("tags").where({ note_id: id }).orderBy("name");
-    const links = await knex("links")
+    const rating = await knex("rating")
       .where({ note_id: id })
       .orderBy("created_at");
 
     return response.json({
       ...note,
       tags,
-      links,
+      rating,
     });
   }
 
@@ -83,7 +83,7 @@ class NotesController {
     }
 
     const userTags = await knex("tags").where({ user_id });
-    const notesWhithTags = notes.map((note) => {
+    const notesWithTags = notes.map((note) => {
       const noteTags = userTags.filter((tag) => tag.note_id === note.id);
 
       return {
@@ -92,7 +92,7 @@ class NotesController {
       };
     });
 
-    return response.json(notesWhithTags);
+    return response.json(notesWithTags);
   }
 }
 
