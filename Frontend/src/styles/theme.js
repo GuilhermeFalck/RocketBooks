@@ -1,6 +1,6 @@
 export default {
   COLORS: {
-    BACKGROUND_900: "#FFE4E1", // Rosa Bebê Claro
+    BACKGROUND_900: "#e97568", // Rosa Bebê Claro
     BACKGROUND_800: "#FFDAB9", // Pêssego Suave
     BACKGROUND_700: "#FFB948", // Amarelo Pálido (Próximo ao Amarelo Manteiga)
 
