@@ -4,13 +4,13 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/global";
 import theme from "./styles/theme";
 
-import { SingIn } from "./pages/SingIn";
+import { SingUp } from "./pages/SingUp";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <SingIn />
+      <SingUp />
     </ThemeProvider>
   </StrictMode>
 );
