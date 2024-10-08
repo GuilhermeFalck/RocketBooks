@@ -3,8 +3,7 @@ exports.up = (knex) =>
     table.increments("id");
     table.text("title");
     table.text("description");
-    table.varchar("image");
-    table.integer();
+    table.varchar("image").nullable();
     table.integer("user_id").references("id").inTable("users");
 
     table.timestamp("created_at").default(knex.fn.now());
