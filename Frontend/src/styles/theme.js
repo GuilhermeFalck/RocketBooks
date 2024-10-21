@@ -4,7 +4,7 @@ export default {
     BACKGROUND_800: "#FFDAB9", // Pêssego Suave
     BACKGROUND_700: "#FFB948", // Amarelo Pálido (Próximo ao Amarelo Manteiga)
 
-    WHITE: "#737373;", // Branco Puro
+    WHITE: "#1b0707", // Branco Puro
     ORANGE: "#F5A623", // Laranja Quente
 
     GRAY_100: "#555555", // Cinza Escuro para melhor contraste com o fundo

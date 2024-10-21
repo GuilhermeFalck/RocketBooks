@@ -5,32 +5,45 @@ class NotesController {
     const { title, description, tags, rating } = request.body;
     const user_id = request.user.id;
 
+    console.log("Request Data:", { title, description, tags, rating });
+
     const [note_id] = await knex("notes").insert({
       title,
       description,
       user_id,
     });
 
-    const ratingInsert = rating.map((link) => {
-      return {
-        note_id,
-        url: link,
-      };
-    });
+    // Rating: já ajustado anteriormente
+    const ratingInsert = Array.isArray(rating)
+      ? rating.map((value) => ({
+          note_id,
+          rate: value,
+        }))
+      : [{ note_id, rate: rating }];
 
-    await knex("rating").insert(ratingInsert);
+    console.log("Rating Data to Insert:", ratingInsert);
 
-    const tagsInsert = tags.map((name) => {
-      return {
-        note_id,
-        name,
-        user_id,
-      };
-    });
+    if (ratingInsert.length) {
+      await knex("rating").insert(ratingInsert);
+    }
 
-    await knex("tags").insert(tagsInsert);
+    // Ajuste para `tags`: Confere se é um array e faz o mapeamento para o formato correto
+    const tagsInsert =
+      Array.isArray(tags) && tags.length > 0
+        ? tags.map((name) => ({
+            note_id,
+            name,
+            user_id,
+          }))
+        : []; // Se `tags` não é um array ou está vazio, não insere nada
 
-    response.json();
+    console.log("Tags Data to Insert:", tagsInsert);
+
+    if (tagsInsert.length) {
+      await knex("tags").insert(tagsInsert);
+    }
+
+    return response.json({ message: "Note created successfully" });
   }
 
   async show(request, response) {
@@ -95,5 +108,4 @@ class NotesController {
     return response.json(notesWhithTags);
   }
 }
-
 module.exports = NotesController;
