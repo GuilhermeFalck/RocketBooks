@@ -4,6 +4,7 @@ exports.up = (knex) =>
     table.text("title");
     table.text("description");
     table.varchar("image").nullable();
+    table.integer("rating").nullable(); // Adiciona o campo rating na tabela notes
     table.integer("user_id").references("id").inTable("users");
 
     table.timestamp("created_at").default(knex.fn.now());

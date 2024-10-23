@@ -57,35 +57,28 @@ export const CapaLivro = styled.div`
   margin: 40px 0;
   width: 100%;
   height: 600px;
-  padding: 20px; /* Adiciona um padding ao redor do container */
+  padding: 20px;
 
   /* Borda tracejada para o contêiner */
-  border: ${({ $imageUrl }) =>
-    $imageUrl ? "none" : "1px dashed black"}; /* Borda tracejada por padrão */
+  border: ${({ $imageUrl }) => ($imageUrl ? "none" : "1px dashed black")};
   border-radius: 10px;
 
   > img {
-    width: 500px;
-    height: 600px;
-    margin: 10px; /* Adiciona espaçamento ao redor da imagem */
-    display: ${({ $imageUrl }) =>
-      $imageUrl ? "block" : "none"}; /* Mostra ou esconde a imagem */
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Faz a imagem se ajustar sem distorcer */
+    display: block; /* Garante que a imagem seja exibida */
   }
 
   > label {
     width: 48px;
     height: 48px;
 
-    background-color: ${({ theme }) => theme.COLORS.ORANGE};
-    border-radius: 50%;
-
-    display: ${({ $imageUrl }) =>
-      $imageUrl ? "none" : "flex"}; /* Mostra o ícone se não houver imagem */
+    display: ${({ $imageUrl }) => ($imageUrl ? "none" : "flex")};
     align-items: center;
     justify-content: center;
 
-    position: absolute;
-
+    position: absolute; /* Já estava, então vamos ajustar o conteúdo dentro */
     cursor: pointer;
 
     input {
@@ -96,6 +89,7 @@ export const CapaLivro = styled.div`
       width: 20px;
       height: 20px;
       color: ${({ theme }) => theme.COLORS.BACKGROUND_800};
+      z-index: 1; /* Garante que o ícone fique acima do fundo */
     }
   }
 `;

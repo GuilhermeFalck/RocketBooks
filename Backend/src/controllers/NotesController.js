@@ -5,29 +5,25 @@ class NotesController {
     const { title, description, tags, rating } = request.body;
     const user_id = request.user.id;
 
+    // Log para verificar o que está sendo enviado
     console.log("Request Data:", { title, description, tags, rating });
 
+    // Verifica se o rating é um valor válido e converte para número, ou usa 0 como valor padrão
+    const validatedRating =
+      rating !== undefined && rating !== null ? parseFloat(rating) : 0;
+
+    // Cria a nota com o rating diretamente na tabela notes
     const [note_id] = await knex("notes").insert({
       title,
       description,
       user_id,
+      image: null, // A imagem será tratada em outra requisição
+      rating: validatedRating, // Insere o rating diretamente na tabela notes
     });
 
-    // Rating: já ajustado anteriormente
-    const ratingInsert = Array.isArray(rating)
-      ? rating.map((value) => ({
-          note_id,
-          rate: value,
-        }))
-      : [{ note_id, rate: rating }];
+    console.log("Nota criada com rating:", validatedRating);
 
-    console.log("Rating Data to Insert:", ratingInsert);
-
-    if (ratingInsert.length) {
-      await knex("rating").insert(ratingInsert);
-    }
-
-    // Ajuste para `tags`: Confere se é um array e faz o mapeamento para o formato correto
+    // Ajuste para as tags
     const tagsInsert =
       Array.isArray(tags) && tags.length > 0
         ? tags.map((name) => ({
@@ -35,30 +31,25 @@ class NotesController {
             name,
             user_id,
           }))
-        : []; // Se `tags` não é um array ou está vazio, não insere nada
+        : [];
 
-    console.log("Tags Data to Insert:", tagsInsert);
-
-    if (tagsInsert.length) {
+    if (tagsInsert.length > 0) {
       await knex("tags").insert(tagsInsert);
     }
 
-    return response.json({ message: "Note created successfully" });
+    return response.json({ message: "Note created successfully", id: note_id });
   }
 
   async show(request, response) {
     const { id } = request.params;
 
+    // Busca a nota com seu rating diretamente da tabela notes
     const note = await knex("notes").where({ id }).first();
     const tags = await knex("tags").where({ note_id: id }).orderBy("name");
-    const rating = await knex("rating")
-      .where({ note_id: id })
-      .orderBy("created_at");
 
     return response.json({
       ...note,
       tags,
-      rating,
     });
   }
 
@@ -72,7 +63,6 @@ class NotesController {
 
   async index(request, response) {
     const { title, tags } = request.query;
-
     const user_id = request.user.id;
 
     let notes;
@@ -81,7 +71,7 @@ class NotesController {
       const filterTags = tags.split(",").map((tag) => tag.trim());
 
       notes = await knex("tags")
-        .select(["notes.id", "notes.title", "notes.user_id"])
+        .select(["notes.id", "notes.title", "notes.user_id", "notes.rating"])
         .where("notes.user_id", user_id)
         .whereLike("notes.title", `%${title}%`)
         .whereIn("name", filterTags)
@@ -96,7 +86,7 @@ class NotesController {
     }
 
     const userTags = await knex("tags").where({ user_id });
-    const notesWhithTags = notes.map((note) => {
+    const notesWithTags = notes.map((note) => {
       const noteTags = userTags.filter((tag) => tag.note_id === note.id);
 
       return {
@@ -105,7 +95,8 @@ class NotesController {
       };
     });
 
-    return response.json(notesWhithTags);
+    return response.json(notesWithTags);
   }
 }
+
 module.exports = NotesController;

@@ -1,4 +1,6 @@
-exports.up = (knex) =>
+exports.up = (knex) => knex.schema.dropTableIfExists("rating"); // Remove a tabela rating
+
+exports.down = (knex) =>
   knex.schema.createTable("rating", (table) => {
     table.increments("id");
     table.integer("rate").notNullable();
@@ -11,5 +13,3 @@ exports.up = (knex) =>
 
     table.timestamp("created_at").default(knex.fn.now());
   });
-
-exports.down = (knex) => knex.schema.dropTable("rating");
