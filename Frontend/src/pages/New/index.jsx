@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import { Textarea } from "../../components/Textarea";
 import { NoteItem } from "../../components/NoteItem";
@@ -13,6 +14,18 @@ import { LiaBookSolid } from "react-icons/lia";
 import capa from "../../img/Acordo.jpg"; // Imagem importada localmente
 
 export function New() {
+  const [tags, setTags] = useState([]);
+  const [newTag, setNewTag] = useState("");
+
+  function handleAddTag() {
+    setTags((prevState) => [...prevState, newTag]);
+    setNewTag("");
+  }
+
+  function handleRemoveTag(deleted) {
+    setTags((prevState) => prevState.filter((tag) => tag !== deleted));
+  }
+
   return (
     <Container>
       <Header />
@@ -44,8 +57,20 @@ export function New() {
 
           <Section title="Gêneros">
             <div className="tags">
-              <NoteItem value="Romance" />
-              <NoteItem isNew placeholder="Novo Gênero" />
+              {tags.map((tag, index) => (
+                <NoteItem
+                  key={String(index)}
+                  value={tag}
+                  onClick={() => handleRemoveTag(tag)}
+                />
+              ))}
+              <NoteItem
+                isNew
+                placeholder="Novo Gênero"
+                onChange={(e) => setNewTag(e.target.value)}
+                value={newTag}
+                onClick={handleAddTag}
+              />
             </div>
           </Section>
           <Button title="Salvar" />
