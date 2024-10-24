@@ -5,9 +5,6 @@ class NotesController {
     const { title, description, tags, rating } = request.body;
     const user_id = request.user.id;
 
-    // Log para verificar o que está sendo enviado
-    console.log("Request Data:", { title, description, tags, rating });
-
     // Verifica se o rating é um valor válido e converte para número, ou usa 0 como valor padrão
     const validatedRating =
       rating !== undefined && rating !== null ? parseFloat(rating) : 0;
@@ -20,8 +17,6 @@ class NotesController {
       image: null, // A imagem será tratada em outra requisição
       rating: validatedRating, // Insere o rating diretamente na tabela notes
     });
-
-    console.log("Nota criada com rating:", validatedRating);
 
     // Ajuste para as tags
     const tagsInsert =
